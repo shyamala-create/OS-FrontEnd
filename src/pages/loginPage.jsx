@@ -4,8 +4,10 @@ import { useNavigate } from "react-router";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "name":
-      return { ...state, name: action.payload };
+    case "firstName":
+      return { ...state, firstName: action.payload };
+    case "lastName":
+      return { ...state, lastName: action.payload };
     case "email":
       return { ...state, email: action.payload };
     case "password":
@@ -13,7 +15,13 @@ const reducer = (state, action) => {
     case "role":
       return { ...state, role: action.payload };
     case "reset":
-      return { name: "", email: "", password: "", role: "student" };
+      return {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        role: "student",
+      };
     default:
       return state;
   }
@@ -21,24 +29,43 @@ const reducer = (state, action) => {
 
 function Login() {
   const [inputValues, dispatch] = useReducer(reducer, {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     role: "student",
   });
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false); // toggle mode
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  // 🔹 Login
+  const validate = () => {
+    let tempErrors = {};
+    if (isRegistering && !inputValues.firstName.trim())
+      tempErrors.firstName = "First name is required";
+    if (isRegistering && !inputValues.lastName.trim())
+      tempErrors.lastName = "Last name is required";
+    if (!inputValues.email.trim())
+      tempErrors.email = "Email is required";
+    if (!inputValues.password.trim())
+      tempErrors.password = "Password is required";
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  // Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
 
+    if (!validate()) return;
+
     try {
       const res = await axios.post(
-        "http://localhost:3002/api/auth/login",
+        "/api/auth/login",
         {
           email: inputValues.email,
           password: inputValues.password,
@@ -53,7 +80,7 @@ function Login() {
 
       setMessage("Login Successful ✅");
       dispatch({ type: "reset" });
-      navigate("/dashboard"); // redirect to dashboard
+      navigate("/dashboard");
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "Login failed. Please try again.";
@@ -61,24 +88,31 @@ function Login() {
     }
   };
 
-  // 🔹 Register
+  // Register
   const handleRegister = async (e) => {
     e.preventDefault();
     setMessage("");
 
+    if (!validate()) return;
+
     try {
-      const res = await axios.post("http://localhost:3002/api/auth/register", {
-        name: inputValues.name,
-        email: inputValues.email,
-        password: inputValues.password,
-        role: inputValues.role, // include role
-      });
+      const res = await axios.post(
+        "/api/auth/register",
+        {
+          firstName: inputValues.firstName,
+          lastName: inputValues.lastName,
+          email: inputValues.email,
+          password: inputValues.password,
+          role: inputValues.role,
+        },
+        { withCredentials: true }
+      );
 
       setMessage(
         res.data.message || "User Registered Successfully ✅ Please login."
       );
       dispatch({ type: "reset" });
-      setIsRegistering(false); // switch back to login
+      setIsRegistering(false);
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "Registration failed. Try again.";
@@ -103,30 +137,55 @@ function Login() {
           className="space-y-4"
           onSubmit={isRegistering ? handleRegister : handleLogin}
         >
-          {/* Name field (only register) */}
           {isRegistering && (
+            <>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Enter first name..."
+                  value={inputValues.firstName}
+                  onChange={(e) =>
+                    dispatch({ type: "firstName", payload: e.target.value })
+                  }
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm">{errors.firstName}</p>
+                )}
+              </div>
+
+              <div>
+                <input
+                  type="text"
+                  placeholder="Enter last name..."
+                  value={inputValues.lastName}
+                  onChange={(e) =>
+                    dispatch({ type: "lastName", payload: e.target.value })
+                  }
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName}</p>
+                )}
+              </div>
+            </>
+          )}
+
+          <div>
             <input
-              type="text"
-              placeholder="Enter name..."
-              value={inputValues.name}
+              type="email"
+              placeholder="Enter email..."
+              value={inputValues.email}
               onChange={(e) =>
-                dispatch({ type: "name", payload: e.target.value })
+                dispatch({ type: "email", payload: e.target.value })
               }
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          )}
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email}</p>
+            )}
+          </div>
 
-          <input
-            type="email"
-            placeholder="Enter email..."
-            value={inputValues.email}
-            onChange={(e) =>
-              dispatch({ type: "email", payload: e.target.value })
-            }
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-
-          {/* Password with eye toggle */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -144,9 +203,11 @@ function Login() {
             >
               {showPassword ? "🙈" : "👁️"}
             </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password}</p>
+            )}
           </div>
 
-          {/* Role select (only register) */}
           {isRegistering && (
             <select
               value={inputValues.role}
@@ -169,7 +230,6 @@ function Login() {
           </button>
         </form>
 
-        {/* Switch login/register */}
         <p className="text-center mt-4 text-sm">
           {isRegistering
             ? "Already have an account?"
@@ -183,7 +243,6 @@ function Login() {
           </button>
         </p>
 
-        {/* Forgot password only on login */}
         {!isRegistering && (
           <button
             onClick={handleClick}
