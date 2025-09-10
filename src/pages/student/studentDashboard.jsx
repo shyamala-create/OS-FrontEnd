@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import LogoutButton from "../logoutPage";
 
 const StudentDashboard = () => {
   return (
@@ -38,6 +39,9 @@ const StudentDashboard = () => {
             Profile
           </NavLink>
         </nav>
+        <div className="flex flex-end justify-between items-center m-6">
+          <LogoutButton />
+        </div>
       </aside>
 
       {/* Main Content */}

@@ -19,6 +19,7 @@ import AvailableExams from "./pages/student/availableExams";
 import ExamDetails from "./pages/student/examDetails";
 import TakeExam from "./pages/student/takeExam";
 import Results from "./pages/student/results";
+import Profile from "./pages/student/profile";
 
 // Lazy-loaded
 const Login = lazy(() => import("./pages/loginPage"));
@@ -92,7 +93,7 @@ const routes = [
       // placeholder for profile page
       {
         path: "profile",
-        element: <div className="p-6">Student Profile Page</div>,
+        element: <Profile/>,
       },
     ],
   },
