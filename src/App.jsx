@@ -4,7 +4,23 @@ import ForgetPasswordPage from "./pages/forgetPasswordPage";
 import ResetPasswordPage from "./pages/resetPasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Lazy-loaded pages
+// Admin Pages
+import AdminDashboard from "./pages/admin/adminDashboard";
+import ManageExams from "./pages/admin/manageExams";
+import ManageQuestions from "./pages/admin/manageQuestions";
+import ManageUsers from "./pages/admin/manageUsers";
+import ProctoringDashboard from "./pages/admin/proctoringDashboard";
+import FlaggedIncidents from "./pages/admin/flaggedIncidents";
+import ReportManagement from "./pages/admin/reports";
+
+//student page
+import StudentDashboard from "./pages/student/studentDashboard";
+import AvailableExams from "./pages/student/availableExams";
+import ExamDetails from "./pages/student/examDetails";
+import TakeExam from "./pages/student/takeExam";
+import Results from "./pages/student/results";
+
+// Lazy-loaded
 const Login = lazy(() => import("./pages/loginPage"));
 const Dashboard = lazy(() => import("./pages/dasboardPage"));
 
@@ -26,6 +42,59 @@ const routes = [
         </ProtectedRoute>
       </Suspense>
     ),
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: "exams",
+        element: <ManageExams />,
+      },
+      {
+        path: "exams/:examId/questions",
+        element: <ManageQuestions />,
+      },
+      {
+        path: "users",
+        element: <ManageUsers />,
+      },
+      {
+        path: "proctoring",
+        element: <ProctoringDashboard />,
+      },
+      {
+        path: "incidents",
+        element: <FlaggedIncidents />,
+      },
+      {
+        path: "reports",
+        element: <ReportManagement />,
+      },
+    ],
+  },
+  {
+    path: "/student",
+    element: (
+      <ProtectedRoute>
+        <StudentDashboard />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "exams", element: <AvailableExams /> },
+      { path: "exams/:examId", element: <ExamDetails /> },
+      { path: "exams/:examId/take", element: <TakeExam /> },
+      { path: "results", element: <Results /> },
+      // placeholder for profile page
+      {
+        path: "profile",
+        element: <div className="p-6">Student Profile Page</div>,
+      },
+    ],
   },
   {
     path: "/forget-password",

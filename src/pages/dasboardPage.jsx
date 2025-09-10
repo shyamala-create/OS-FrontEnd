@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -11,7 +13,6 @@ export default function Dashboard() {
         const res = await axios.get("http://localhost:3000/api/auth/me", {
           withCredentials: true,
         });
-        console.log(res);
         setUser(res.data);
       } catch (err) {
         console.error("Failed to fetch user", err);
@@ -25,21 +26,19 @@ export default function Dashboard() {
   if (loading) return <div className="p-6 text-center">Loading dashboard...</div>;
   if (!user) return <div className="p-6 text-red-500">No user found. Please log in again.</div>;
 
+  // ✅ Redirect admins into AdminDashboard layout
+  if (user.role === "admin") {
+    navigate("/admin/exams"); // or just "/admin" to show sidebar + default route
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-2xl font-bold mb-4">
-        Welcome, {user.name} 👋 ({user.role})
+        Welcome, {user.firstName} 👋 ({user.role})
       </h1>
 
-      {user.role === "admin" && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card title="Manage Exams" link="/admin/exams" />
-          <Card title="Question Banks" link="/admin/questions" />
-          <Card title="Reports & Analytics" link="/admin/reports" />
-          <Card title="User Management" link="/admin/users" />
-        </div>
-      )}
-
+      {/* Student Dashboard */}
       {user.role === "student" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card title="Available Exams" link="/student/exams" />
@@ -47,6 +46,7 @@ export default function Dashboard() {
         </div>
       )}
 
+      {/* Proctor Dashboard */}
       {user.role === "proctor" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card title="Live Monitoring" link="/proctor/monitoring" />
