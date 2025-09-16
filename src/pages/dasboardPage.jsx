@@ -32,6 +32,11 @@ export default function Dashboard() {
     return null;
   }
 
+  if(user.role === "proctor"){
+    navigate("/proctoring");
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-2xl font-bold mb-4">
@@ -49,7 +54,7 @@ export default function Dashboard() {
       {/* Proctor Dashboard */}
       {user.role === "proctor" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card title="Live Monitoring" link="/proctor/monitoring" />
+          <Card title="Live Monitoring" link="/proctoring/monitoring" />
           <Card title="Flagged Incidents" link="/proctor/incidents" />
         </div>
       )}

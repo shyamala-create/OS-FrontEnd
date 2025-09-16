@@ -20,6 +20,8 @@ import ExamDetails from "./pages/student/examDetails";
 import TakeExam from "./pages/student/takeExam";
 import Results from "./pages/student/results";
 import Profile from "./pages/student/profile";
+import CreateQuestion from "./pages/admin/createQuestions";
+import LiveMonitoring from "./pages/proctor/liveMonitoring";
 
 // Lazy-loaded
 const Login = lazy(() => import("./pages/loginPage"));
@@ -65,6 +67,10 @@ const routes = [
         element: <ManageUsers />,
       },
       {
+        path: "/admin/createQuestions",
+        element: <CreateQuestion />,
+      },
+      {
         path: "proctoring",
         element: <ProctoringDashboard />,
       },
@@ -93,9 +99,21 @@ const routes = [
       // placeholder for profile page
       {
         path: "profile",
-        element: <Profile/>,
+        element: <Profile />,
       },
     ],
+  },
+  {
+    path: "/proctoring",
+    element: (
+      <ProtectedRoute>
+        <ProctoringDashboard />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/proctoring/monitoring",
+    element: <LiveMonitoring />,
   },
   {
     path: "/forget-password",

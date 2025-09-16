@@ -29,6 +29,12 @@ const AdminDashboard = () => {
             Proctoring Management
           </Link>
           <Link
+            to="/admin/createQuestions"
+            className="block py-2 px-3 rounded hover:bg-gray-700"
+          >
+            Create Questions
+          </Link>
+          <Link
             to="/admin/reports"
             className="block py-2 px-3 rounded hover:bg-gray-700"
           >

@@ -9,7 +9,6 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Call your backend /me endpoint to validate token & get role
         const res = await axios.get("/api/auth/me", { withCredentials: true });
         const user = res.data;
 

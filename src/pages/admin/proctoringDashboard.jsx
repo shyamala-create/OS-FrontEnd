@@ -1,8 +1,23 @@
+import { useNavigate, Outlet } from "react-router-dom";
+
+
 const ProctoringDashboard = () => {
+  const navigate = useNavigate();
   const activeSessions = [
     { id: 1, exam: "JavaScript Basics", proctor: "John Doe", status: "Live" },
-    { id: 2, exam: "React Fundamentals", proctor: "Sarah Lee", status: "Scheduled" },
+    {
+      id: 2,
+      exam: "React Fundamentals",
+      proctor: "Sarah Lee",
+      status: "Scheduled",
+    },
   ];
+
+  const handleMonitorClick = () => {
+    alert("Monitoring session started!");
+    navigate("/proctoring/monitoring");
+    return null;
+  };
 
   return (
     <div className="p-6">
@@ -25,7 +40,10 @@ const ProctoringDashboard = () => {
               <td className="p-3">{s.proctor}</td>
               <td className="p-3 font-semibold">{s.status}</td>
               <td className="p-3 space-x-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600">
+                <button
+                  onClick={handleMonitorClick}
+                  className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                >
                   Monitor
                 </button>
                 <button className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600">
@@ -36,6 +54,7 @@ const ProctoringDashboard = () => {
           ))}
         </tbody>
       </table>
+       {/* <Outlet />  */}
     </div>
   );
 };

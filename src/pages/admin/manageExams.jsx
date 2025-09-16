@@ -11,10 +11,12 @@ const ManageExams = () => {
     duration: "",
     totalMarks: "",
     instructions: "",
+    timeLimitPerQuestion: "", 
   });
   const [loading, setLoading] = useState(true);
   const [editingExam, setEditingExam] = useState(null);
 
+  
   // Fetch exams
   useEffect(() => {
     fetchExams();
