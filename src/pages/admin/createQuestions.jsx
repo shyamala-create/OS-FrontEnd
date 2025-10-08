@@ -42,7 +42,7 @@ const CreateQuestion = () => {
       });
     } catch (err) {
       console.error(err);
-      alert("❌ Error adding question");
+      alert("Error adding question");
     }
   };
 

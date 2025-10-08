@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { lazy, Suspense } from "react";
 import ForgetPasswordPage from "./pages/forgetPasswordPage";
 import ResetPasswordPage from "./pages/resetPasswordPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/protectedRoute";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/adminDashboard";
