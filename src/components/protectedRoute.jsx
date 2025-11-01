@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("https://onlineassessmentplatform.netlify.app/api/auth/me", { withCredentials: true });
+        const res = await axios.get("https://online-assessment-backend.onrender.com/api/auth/me", { withCredentials: true });
         const user = res.data;
 
         if (!allowedRoles || allowedRoles.includes(user.role)) {
