@@ -12,7 +12,7 @@ const ResetPasswordPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/auth/reset-password/${token}`,
+        `https://online-assessment-backend-wnre.onrender.com/api/auth/reset-password/${token}`,
         {
           password: newPassword,
         }

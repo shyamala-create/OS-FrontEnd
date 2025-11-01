@@ -10,7 +10,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/auth/me", {
+        const res = await axios.get("https://online-assessment-backend-wnre.onrender.com/api/auth/me", {
           withCredentials: true,
         });
         setUser(res.data);

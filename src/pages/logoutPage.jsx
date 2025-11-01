@@ -6,7 +6,7 @@ function LogoutButton() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3000/api/auth/logout", {}, { withCredentials: true });
+      await axios.post("https://online-assessment-backend-wnre.onrender.com/api/auth/logout", {}, { withCredentials: true });
       navigate("/"); // redirect to login
     } catch (err) {
       console.error("Logout failed", err);

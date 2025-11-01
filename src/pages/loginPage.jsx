@@ -65,7 +65,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "/api/auth/login",
+        "https://online-assessment-backend-wnre.onrender.com/api/auth/login",
         {
           email: inputValues.email,
           password: inputValues.password,
@@ -97,7 +97,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "/api/auth/register",
+        "https://online-assessment-backend-wnre.onrender.com/api/auth/register",
         {
           firstName: inputValues.firstName,
           lastName: inputValues.lastName,
