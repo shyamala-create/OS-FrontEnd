@@ -15,7 +15,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get("https://online-assessment-backend-wnre.onrender.com/api/auth/me", {
+        const res = await axios.get("http://localhost:3000/api/auth/me", {
           withCredentials: true,
         });
         console.log("user profile data", res);
@@ -43,7 +43,7 @@ const Profile = () => {
 const handleSave = async () => {
   try {
     const res = await axios.put(
-      "https://online-assessment-backend-wnre.onrender.com/api/auth/student/profile",
+      "http://localhost:3000/api/auth/student/profile",
       formData,
       { withCredentials: true }
     );
